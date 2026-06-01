@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predicción de Seguro Médico</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- Encabezado -->
+        <header class="header">
+            <div class="header-content">
+                <h1>🏥 Predicción de Costos de Seguro Médico</h1>
+                <p class="subtitle">
+                    Ingrese los datos del paciente para estimar el costo anual del seguro médico
+                    utilizando modelos de aprendizaje automático.
+                </p>
+            </div>
+        </header>
+
+        <!-- Formulario de predicción -->
+        <div class="main-content">
+            <div class="form-card">
+                <div class="card-header">
+                    <h2>📋 Datos del Paciente</h2>
+                    <p>Complete todos los campos para obtener una estimación precisa.</p>
+                </div>
+
+                <form id="prediction-form" class="prediction-form">
+                    <!-- Fila 1: Edad y Género -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="age">Edad (años)</label>
+                            <input type="number" id="age" name="age" min="18" max="100" value="35" required>
+                            <small>Entre 18 y 100 años</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="sex">Género</label>
+                            <select id="sex" name="sex" required>
+                                <option value="female">Femenino</option>
+                                <option value="male">Masculino</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Fila 2: BMI e Hijos -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="bmi">Índice de Masa Corporal (BMI)</label>
+                            <input type="number" id="bmi" name="bmi" min="10" max="60" step="0.1" value="28.5" required>
+                            <small>kg/m² — Rango típico: 15–50</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="children">Hijos Dependientes</label>
+                            <input type="number" id="children" name="children" min="0" max="10" value="0" required>
+                            <small>Número de hijos cubiertos por el seguro</small>
+                        </div>
+                    </div>
+
+                    <!-- Fila 3: Fumador y Región -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="smoker">¿Es fumador?</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="smoker" name="smoker" value="yes">
+                                    <span class="checkbox-custom"></span>
+                                    Sí, soy fumador activo
+                                </label>
+                            </div>
+                            <small>El tabaquismo es el factor más determinante del costo</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="region">Región de Residencia</label>
+                            <select id="region" name="region" required>
+                                <option value="southeast">Southeast</option>
+                                <option value="southwest">Southwest</option>
+                                <option value="northeast">Northeast</option>
+                                <option value="northwest">Northwest</option>
+                            </select>
+                            <small>Región de EE.UU. donde reside el asegurado</small>
+                        </div>
+                    </div>
+
+                    <!-- Botón de envío -->
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary" id="predict-btn">
+                            <span class="btn-icon">🔮</span>
+                            Estimar Costo del Seguro
+                        </button>
+                        <button type="reset" class="btn-secondary" id="reset-btn">
+                            Limpiar Formulario
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Resultado de la predicción -->
+                <div id="result" class="result-card hidden">
+                    <div class="result-header">
+                        <h3>📊 Resultado de la Estimación</h3>
+                    </div>
+                    <div class="result-body">
+                        <div class="result-amount">
+                            <span class="result-label">Costo Anual Estimado:</span>
+                            <span class="result-value" id="predicted-value">$0.00</span>
+                        </div>
+                        <div class="result-details">
+                            <p><strong>Modelo utilizado:</strong> <span id="model-name">—</span></p>
+                            <p class="result-note">
+                                💡 Este es un valor estimado basado en datos históricos.
+                                El costo real puede variar según la aseguradora y cobertura específica.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mensaje de error -->
+                <div id="error" class="error-card hidden">
+                    <p>⚠️ <span id="error-message">Ocurrió un error al procesar la solicitud.</span></p>
+                </div>
+            </div>
+
+            <!-- Sidebar informativo -->
+            <div class="info-card">
+                <h3>🧠 ¿Cómo funciona?</h3>
+                <ol>
+                    <li>
+                        <strong>Ingrese los datos</strong> del paciente en el formulario
+                    </li>
+                    <li>
+                        <strong>El modelo preprocesa</strong> aplicando encoding,
+                        escalado e ingeniería de features
+                    </li>
+                    <li>
+                        <strong>El algoritmo</strong> (entrenado con 1,338 registros)
+                        calcula el costo estimado
+                    </li>
+                </ol>
+
+                <h3>📈 Factores Clave</h3>
+                <ul class="factor-list">
+                    <li>
+                        <span class="factor-icon">🚬</span>
+                        <span><strong>Tabaquismo:</strong> Multiplica el costo por 3–4x</span>
+                    </li>
+                    <li>
+                        <span class="factor-icon">⚖️</span>
+                        <span><strong>BMI:</strong> Mayor impacto si el paciente fuma</span>
+                    </li>
+                    <li>
+                        <span class="factor-icon">🎂</span>
+                        <span><strong>Edad:</strong> Relación no lineal con los costos</span>
+                    </li>
+                </ul>
+
+                <div class="dashboard-link">
+                    <a href="/dashboard" class="btn-outline">
+                        📊 Ver Dashboard Interactivo
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Universidad Popular del Cesar — Ciencia de Datos | Metodología CRISP-DM</p>
+            <p>Docente: Aimer Rivera Centeno</p>
+        </footer>
+    </div>
+
+    <!-- Script para enviar el formulario vía AJAX -->
+    <script>
+        const form = document.getElementById('prediction-form');
+        const resultDiv = document.getElementById('result');
+        const errorDiv = document.getElementById('error');
+        const errorMessage = document.getElementById('error-message');
+        const predictedValue = document.getElementById('predicted-value');
+        const modelName = document.getElementById('model-name');
+        const predictBtn = document.getElementById('predict-btn');
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Ocultar resultados y errores previos
+            resultDiv.classList.add('hidden');
+            errorDiv.classList.add('hidden');
+
+            // Mostrar estado de carga
+            predictBtn.disabled = true;
+            predictBtn.innerHTML = '<span class="spinner"></span> Calculando...';
+
+            // Recoger datos del formulario
+            const formData = {
+                age: parseInt(document.getElementById('age').value),
+                sex: document.getElementById('sex').value,
+                bmi: parseFloat(document.getElementById('bmi').value),
+                children: parseInt(document.getElementById('children').value),
+                smoker: document.getElementById('smoker').checked ? 'yes' : 'no',
+                region: document.getElementById('region').value
+            };
+
+            try {
+                // Enviar solicitud POST a /predict
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Mostrar resultado con animación
+                    predictedValue.textContent = `$${data.prediccion.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+                    modelName.textContent = data.modelo;
+                    resultDiv.classList.remove('hidden');
+                    resultDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                } else {
+                    // Mostrar error
+                    errorMessage.textContent = data.error || 'Error desconocido al procesar la solicitud.';
+                    errorDiv.classList.remove('hidden');
+                }
+            } catch (err) {
+                errorMessage.textContent = 'Error de conexión con el servidor. Verifique que la app esté corriendo.';
+                errorDiv.classList.remove('hidden');
+            } finally {
+                // Restaurar botón
+                predictBtn.disabled = false;
+                predictBtn.innerHTML = '<span class="btn-icon">🔮</span> Estimar Costo del Seguro';
+            }
+        });
+
+        // Botón de limpiar
+        document.getElementById('reset-btn').addEventListener('click', () => {
+            resultDiv.classList.add('hidden');
+            errorDiv.classList.add('hidden');
+        });
+    </script>
+</body>
+</html>

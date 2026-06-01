@@ -1,0 +1,63 @@
+% ============================================================
+% metodologia.tex — Metodología CRISP-DM aplicada al caso
+% ============================================================
+\section{Metodología}
+
+Se adoptó la metodología CRISP-DM (\textit{Cross-Industry Standard Process
+for Data Mining}) \cite{wirth2000crisp}, que estructura el desarrollo en
+seis fases iterativas.
+
+\subsection{Comprensión del Negocio}
+El problema se formula como clasificación binaria supervisada: dada una
+transacción con características $\mathbf{x} \in \mathbb{R}^{30}$, predecir
+$y \in \{0, 1\}$ donde $y=1$ indica fraude. La métrica de negocio
+prioritaria es el \textit{Recall} de la clase fraude, pues un falso
+negativo (fraude no detectado) implica pérdida económica directa.
+
+\subsection{Comprensión y Preparación de los Datos}
+El dataset contiene 284,807 transacciones con 30 características:
+28 componentes PCA ($V_1$–$V_{28}$), \texttt{Time} y \texttt{Amount}.
+La variable objetivo \texttt{Class} presenta una distribución extremadamente
+desbalanceada: 99.83\% transacciones legítimas vs 0.17\% fraudulentas.
+
+Las columnas \texttt{Time} y \texttt{Amount} se normalizaron con
+\texttt{StandardScaler}. El conjunto se dividió 80/20 con estratificación
+para preservar la proporción de clases.
+
+\subsection{Manejo del Desbalance — SMOTE}
+Se aplicó \textit{Synthetic Minority Over-sampling Technique} (SMOTE)
+\cite{chawla2002smote} exclusivamente sobre el conjunto de entrenamiento
+para evitar data leakage. SMOTE genera instancias sintéticas de la clase
+minoritaria interpolando entre vecinos cercanos en el espacio de
+características.
+
+\subsection{Modelos Evaluados}
+
+\subsubsection{Regresión Logística}
+Modelo lineal base. Dado el vector de características $\mathbf{x}$:
+\begin{equation}
+P(y=1|\mathbf{x}) = \sigma(\mathbf{w}^T\mathbf{x} + b) = \frac{1}{1+e^{-(\mathbf{w}^T\mathbf{x}+b)}}
+\end{equation}
+
+\subsubsection{Random Forest}
+Ensemble de $T$ árboles de decisión. La predicción final agrega por
+mayoría de votos:
+\begin{equation}
+\hat{y} = \text{mode}\{h_t(\mathbf{x})\}_{t=1}^{T}
+\end{equation}
+
+\subsubsection{XGBoost}
+Gradient boosting optimizado. Minimiza una función objetivo regularizada:
+\begin{equation}
+\mathcal{L} = \sum_i l(y_i, \hat{y}_i) + \sum_k \Omega(f_k)
+\end{equation}
+
+\subsection{Métricas de Evaluación}
+Dado el desbalance, se descarta la exactitud como métrica primaria.
+Se utilizan:
+\begin{itemize}
+  \item \textbf{ROC-AUC}: área bajo la curva ROC
+  \item \textbf{Precision}: $TP / (TP + FP)$
+  \item \textbf{Recall}: $TP / (TP + FN)$ — métrica principal
+  \item \textbf{F1-Score}: media armónica de Precision y Recall
+\end{itemize}

@@ -1,0 +1,32 @@
+\section{Introducción}
+
+Con más de 600 millones de usuarios activos y un catálogo superior a los
+100 millones de canciones, Spotify es la plataforma de streaming musical
+más grande del mundo \cite{spotify2024stats}. El éxito de su sistema de
+recomendación---responsable del 30\% de los plays---depende en gran medida
+de técnicas de aprendizaje automático que identifican similitudes entre
+canciones y preferencias de usuarios \cite{schedl2018current}.
+
+El agrupamiento no supervisado ofrece una aproximación natural a la
+organización de contenido musical: sin requerir etiquetas manuales,
+permite descubrir estructuras latentes en el espacio de características
+de audio. Variables como \textit{danceability}, \textit{energy} y
+\textit{valence}, derivadas del análisis de señales de audio, capturan
+aspectos perceptivos de la música que van más allá del género declarado
+\cite{turnbull2008semantic}.
+
+El presente trabajo aplica K-Means y análisis de componentes principales
+(PCA) sobre el Spotify Tracks Dataset para identificar clusters musicales
+coherentes. El objetivo práctico es construir la base algorítmica de un
+sistema de recomendación que sugiera canciones similares basándose en
+el cluster al que pertenecen.
+
+\subsection{Objetivos}
+\begin{itemize}
+  \item Aplicar K-Means y métricas de evaluación (Silhouette, Davies-Bouldin)
+        para determinar el número óptimo de clusters.
+  \item Caracterizar cada cluster mediante el perfil promedio de sus
+        características de audio.
+  \item Visualizar los clusters en espacio reducido mediante PCA.
+  \item Desplegar el sistema como aplicación web con Flask y Plotly.
+\end{itemize}

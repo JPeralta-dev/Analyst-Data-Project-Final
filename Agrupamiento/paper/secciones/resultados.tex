@@ -1,0 +1,45 @@
+\section{Resultados}
+
+\subsection{Análisis Exploratorio}
+El análisis de correlación reveló relaciones significativas entre las
+características de audio: energy y loudness presentan correlación positiva
+fuerte ($r > 0.7$), mientras que energy y acousticness muestran correlación
+negativa ($r < -0.7$), consistente con la naturaleza opuesta de música
+electrónica/acústica \cite{schedl2018current}.
+
+\subsection{Determinación del K Óptimo}
+% INSTRUCCIÓN: Completar con resultados reales del notebook ejecutado
+El método del codo sugirió $K = $ [valor] como punto de inflexión.
+El Silhouette Score máximo se obtuvo en $K = $ [valor] con un valor de [valor].
+
+\subsection{Caracterización de Clusters}
+% INSTRUCCIÓN: Completar tabla con valores reales del perfil promedio
+\begin{table}[H]
+\centering
+\caption{Perfil Promedio de Características de Audio por Cluster}
+\label{tab:clusters}
+\begin{tabular}{lccccc}
+\toprule
+\textbf{Cluster} & \textbf{Dance.} & \textbf{Energy} & \textbf{Valence} & \textbf{Acoust.} & \textbf{N} \\
+\midrule
+0 & -- & -- & -- & -- & -- \\
+1 & -- & -- & -- & -- & -- \\
+2 & -- & -- & -- & -- & -- \\
+3 & -- & -- & -- & -- & -- \\
+4 & -- & -- & -- & -- & -- \\
+5 & -- & -- & -- & -- & -- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Visualización PCA}
+La proyección de los clusters en el espacio de 2 componentes principales
+(ver figura \ref{fig:pca}) permitió observar la separación entre grupos.
+La varianza explicada acumulada por las dos primeras componentes fue de
+[X]\%.
+\begin{figure}[H]
+\centering
+\includegraphics[width=\columnwidth]{figuras/pca_clusters.png}
+\caption{Visualización de clusters K-Means mediante PCA 2D}
+\label{fig:pca}
+\end{figure}

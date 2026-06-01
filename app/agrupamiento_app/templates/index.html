@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🎵 Agrupamiento Spotify — Predicción de Cluster</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <!-- ============================================================ -->
+        <!-- HEADER -->
+        <!-- ============================================================ -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">🎵</span>
+                <h1>Spotify Cluster Predictor</h1>
+            </div>
+            <p class="subtitle">
+                Ingresa las características de audio para descubrir qué tipo de
+                música representa tu canción
+            </p>
+        </header>
+
+        <!-- ============================================================ -->
+        <!-- FORMULARIO DE PREDICCIÓN -->
+        <!-- ============================================================ -->
+        <form id="predictForm" class="form-card">
+            <h2>Características de Audio</h2>
+            <p class="form-hint">Ajusta los sliders según los valores de tu canción</p>
+
+            <div class="sliders-grid">
+                <!-- Danceability -->
+                <div class="slider-group">
+                    <label for="danceability">
+                        Danceability
+                        <span class="tooltip">¿Qué tan bailable es la canción? (0 = nada, 1 = muy bailable)</span>
+                    </label>
+                    <div class="slider-container">
+                        <input type="range" id="danceability" min="0" max="1" step="0.01" value="0.5">
+                        <span class="slider-value" id="danceability-value">0.50</span>
+                    </div>
+                </div>
+
+                <!-- Energy -->
+                <div class="slider-group">
+                    <label for="energy">
+                        Energy
+                        <span class="tooltip">Intensidad y actividad percibida (0 = baja, 1 = muy energética)</span>
+                    </label>
+                    <div class="slider-container">
+                        <input type="range" id="energy" min="0" max="1" step="0.01" value="0.5">
+                        <span class="slider-value" id="energy-value">0.50</span>
+                    </div>
+                </div>
+
+                <!-- Loudness -->
+                <div class="slider-group">
+                    <label for="loudness">
+                        Loudness (dB)
+                        <span class="tooltip">Volumen promedio en decibelios (-60 = silencioso, 0 = muy alto)</span>
+                    </label>
+                    <div class="slider-container">
+                        <input type="range" id="loudness" min="-60" max="0" step="0.1" value="-30">
+                        <span class="slider-value" id="loudness-value">-30.0</span>
+                    </div>
+                </div>
+
+                <!-- Speechiness -->
+                <div class="slider-group">
+                    <label for="speechiness">
+                        Speechiness
+                        <span class="tooltip">Presencia de palabras habladas (0 = instrumental, 1 = solo hablado)</span>
+                    </label>
+                    <div class="slider-container">
+                        <input type="range" id="speechiness" min="0" max="1" step="0.01" value="0.1">
+                        <span class="slider-value" id="speechiness-value">0.10</span>
+                    </div>
+                </div>
+
+                <!-- Acousticness -->
+                <div class="slider-group">
+                    <label for="acousticness">
+                        Acousticness
+                        <span class="tooltip">Probabilidad de que sea acústica (0 = electrónica, 1 = 100% acústica)</span>
+                    </label>
+                    <div class="slider-container">
+                        <input type="range" id="acousticness" min="0" max="1" step="0.01" value="0.3">
+                        <span class="slider-value" id="acousticness-value">0.30</span>
+                    </div>
+                </div>
+
+                <!-- Instrumentalness -->
+                <div class="slider-group">
+                    <label for="instrumentalness">
+                        Instrumentalness
+                        <span class="tooltip">Si no contiene voz (0 = tiene voz, 1 = instrumental puro)</span>
+                    </label>
+                    <div class="slider-container">
+                        <input type="range" id="instrumentalness" min="0" max="1" step="0.01" value="0.0">
+                        <span class="slider-value" id="instrumentalness-value">0.00</span>
+                    </div>
+                </div>
+
+                <!-- Liveness -->
+                <div class="slider-group">
+                    <label for="liveness">
+                        Liveness
+                        <span class="tooltip">Probabilidad de grabación en vivo (0 = estudio, 1 = en vivo)</span>
+                    </label>
+                    <div class="slider-container">
+                        <input type="range" id="liveness" min="0" max="1" step="0.01" value="0.2">
+                        <span class="slider-value" id="liveness-value">0.20</span>
+                    </div>
+                </div>
+
+                <!-- Valence -->
+                <div class="slider-group">
+                    <label for="valence">
+                        Valence
+                        <span class="tooltip">Positividad emocional (0 = triste/negativo, 1 = alegre/positivo)</span>
+                    </label>
+                    <div class="slider-container">
+                        <input type="range" id="valence" min="0" max="1" step="0.01" value="0.5">
+                        <span class="slider-value" id="valence-value">0.50</span>
+                    </div>
+                </div>
+
+                <!-- Tempo -->
+                <div class="slider-group">
+                    <label for="tempo">
+                        Tempo (BPM)
+                        <span class="tooltip">Velocidad de la canción en pulsos por minuto</span>
+                    </label>
+                    <div class="slider-container">
+                        <input type="range" id="tempo" min="0" max="250" step="1" value="120">
+                        <span class="slider-value" id="tempo-value">120</span>
+                    </div>
+                </div>
+
+                <!-- Popularity -->
+                <div class="slider-group">
+                    <label for="popularity">
+                        Popularity
+                        <span class="tooltip">Popularidad en Spotify (0 = desconocida, 100 = éxito global)</span>
+                    </label>
+                    <div class="slider-container">
+                        <input type="range" id="popularity" min="0" max="100" step="1" value="50">
+                        <span class="slider-value" id="popularity-value">50</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botón de predicción -->
+            <button type="submit" class="btn-predict" id="btnPredict">
+                <span>🎯 Predecir Cluster</span>
+            </button>
+        </form>
+
+        <!-- ============================================================ -->
+        <!-- RESULTADO DE LA PREDICCIÓN -->
+        <!-- ============================================================ -->
+        <div id="result" class="result-card hidden">
+            <h2>Resultado</h2>
+            <div class="result-content">
+                <div class="cluster-badge" id="clusterBadge">Cluster 0</div>
+                <h3 id="clusterName">Nombre del Cluster</h3>
+                <p id="clusterDesc">Descripción del cluster</p>
+                <div class="cluster-meta">
+                    <span>Distancia al centroide: <strong id="clusterDist">0.00</strong></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- FOOTER -->
+        <!-- ============================================================ -->
+        <footer class="footer">
+            <p>
+                <a href="/dashboard" class="btn-secondary">📊 Ver Dashboard</a>
+            </p>
+            <p class="footer-text">
+                Proyecto Final — Ciencia de Datos | Universidad Popular del Cesar
+            </p>
+        </footer>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SCRIPTS -->
+    <!-- ============================================================ -->
+    <script>
+        // Actualizar valores de los sliders en tiempo real
+        document.querySelectorAll('input[type="range"]').forEach(slider => {
+            const valueDisplay = document.getElementById(slider.id + '-value');
+            slider.addEventListener('input', function() {
+                let val = parseFloat(this.value);
+                // Mostrar con formato adecuado según el tipo
+                if (this.id === 'tempo' || this.id === 'popularity') {
+                    valueDisplay.textContent = val;
+                } else if (this.id === 'loudness') {
+                    valueDisplay.textContent = val.toFixed(1);
+                } else {
+                    valueDisplay.textContent = val.toFixed(2);
+                }
+            });
+        });
+
+        // Enviar formulario vía AJAX
+        document.getElementById('predictForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const btn = document.getElementById('btnPredict');
+            btn.disabled = true;
+            btn.innerHTML = '<span>⏳ Procesando...</span>';
+
+            // Recolectar datos del formulario
+            const data = {
+                danceability: parseFloat(document.getElementById('danceability').value),
+                energy: parseFloat(document.getElementById('energy').value),
+                loudness: parseFloat(document.getElementById('loudness').value),
+                speechiness: parseFloat(document.getElementById('speechiness').value),
+                acousticness: parseFloat(document.getElementById('acousticness').value),
+                instrumentalness: parseFloat(document.getElementById('instrumentalness').value),
+                liveness: parseFloat(document.getElementById('liveness').value),
+                valence: parseFloat(document.getElementById('valence').value),
+                tempo: parseFloat(document.getElementById('tempo').value),
+                popularity: parseInt(document.getElementById('popularity').value)
+            };
+
+            try {
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(data)
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    // Mostrar resultado
+                    const resultDiv = document.getElementById('result');
+                    document.getElementById('clusterBadge').textContent = 'Cluster ' + result.cluster_id;
+                    document.getElementById('clusterBadge').className = 'cluster-badge cluster-' + result.cluster_id;
+                    document.getElementById('clusterName').textContent = result.cluster_nombre;
+                    document.getElementById('clusterDesc').textContent = result.descripcion;
+                    document.getElementById('clusterDist').textContent = result.distancia_centroide;
+                    resultDiv.classList.remove('hidden');
+                } else {
+                    alert('Error: ' + (result.error || 'Error desconocido'));
+                }
+            } catch (error) {
+                alert('Error de conexión: ' + error.message);
+            } finally {
+                btn.disabled = false;
+                btn.innerHTML = '<span>🎯 Predecir Cluster</span>';
+            }
+        });
+    </script>
+</body>
+</html>

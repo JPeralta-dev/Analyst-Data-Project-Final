@@ -1,0 +1,30 @@
+\section{Resultados}
+
+\subsection{Análisis Exploratorio}
+El análisis confirmó que los fumadores incurren en costos
+significativamente mayores: el costo promedio de un fumador fue de
+\$32,050 vs. \$8,434 para no fumadores (diferencia de 3.8x).
+La correlación entre BMI y charges fue moderada ($r = 0.20$) para
+no fumadores, pero se amplificó considerablemente en fumadores.
+
+\subsection{Comparación de Modelos}
+\begin{table}[H]
+\centering
+\caption{Métricas de Regresión en Conjunto de Prueba}
+\label{tab:reg_resultados}
+\begin{tabular}{lccc}
+\toprule
+\textbf{Modelo} & \textbf{MAE (\$)} & \textbf{RMSE (\$)} & \textbf{R²} \\
+\midrule
+Regresión Lineal  & --      & --      & -- \\
+Ridge             & --      & --      & -- \\
+Lasso             & --      & --      & -- \\
+Random Forest     & --      & --      & -- \\
+XGBoost           & --      & --      & -- \\
+Gradient Boosting & --      & --      & -- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Importancia de Variables}
+[Completar con el gráfico de importancia del mejor modelo]

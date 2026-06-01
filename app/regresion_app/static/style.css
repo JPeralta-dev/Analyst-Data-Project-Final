@@ -1,0 +1,490 @@
+/* =============================================================================
+   Style Guide — App de Predicción de Seguro Médico
+   =============================================================================
+   Paleta de colores:
+   - Primary:    #1565C0 (azul oscuro) — encabezados, botones
+   - Secondary:  #0D47A1 (azul más oscuro) — hover
+   - Accent:     #4CAF50 (verde) — aciertos, éxito
+   - Danger:     #F44336 (rojo) — errores, fumadores
+   - Background: #F0F4F8 (gris azulado claro)
+   - Surface:    #FFFFFF (blanco) — tarjetas
+   - Text:       #1A1A2E (casi negro) — texto principal
+   ============================================================================= */
+
+/* =============================================================================
+   Reset y configuración base
+   ============================================================================= */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background-color: #F0F4F8;
+    color: #1A1A2E;
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* =============================================================================
+   Encabezado
+   ============================================================================= */
+.header {
+    background: linear-gradient(135deg, #1565C0, #0D47A1);
+    color: white;
+    border-radius: 16px;
+    padding: 40px;
+    margin-bottom: 30px;
+    box-shadow: 0 8px 32px rgba(21, 101, 192, 0.2);
+}
+
+.header-content h1 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.subtitle {
+    font-size: 1rem;
+    opacity: 0.9;
+    font-weight: 300;
+}
+
+.btn-back {
+    display: inline-block;
+    margin-top: 12px;
+    color: white;
+    text-decoration: none;
+    font-size: 0.9rem;
+    opacity: 0.85;
+    transition: opacity 0.2s;
+}
+
+.btn-back:hover {
+    opacity: 1;
+    text-decoration: underline;
+}
+
+/* =============================================================================
+   Layout principal (formulario + sidebar)
+   ============================================================================= */
+.main-content {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 24px;
+    margin-bottom: 30px;
+}
+
+/* =============================================================================
+   Tarjetas (cards)
+   ============================================================================= */
+.form-card,
+.info-card {
+    background: white;
+    border-radius: 12px;
+    padding: 28px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.card-header {
+    margin-bottom: 24px;
+}
+
+.card-header h2 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #1565C0;
+}
+
+.card-header p {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 4px;
+}
+
+.info-card h3 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1565C0;
+    margin: 20px 0 12px;
+}
+
+.info-card h3:first-child {
+    margin-top: 0;
+}
+
+.info-card ol {
+    padding-left: 20px;
+    font-size: 0.9rem;
+    color: #444;
+}
+
+.info-card ol li {
+    margin-bottom: 8px;
+}
+
+/* =============================================================================
+   Formulario
+   ============================================================================= */
+.form-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 20px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 6px;
+}
+
+.form-group input[type="number"],
+.form-group select {
+    padding: 10px 14px;
+    border: 2px solid #E0E0E0;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-family: inherit;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    background: #FAFBFC;
+}
+
+.form-group input[type="number"]:focus,
+.form-group select:focus {
+    outline: none;
+    border-color: #1565C0;
+    box-shadow: 0 0 0 3px rgba(21, 101, 192, 0.12);
+    background: white;
+}
+
+.form-group small {
+    font-size: 0.75rem;
+    color: #888;
+    margin-top: 4px;
+}
+
+/* Checkbox personalizado */
+.checkbox-group {
+    display: flex;
+    align-items: center;
+}
+
+.checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.checkbox-label input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: #F44336;
+    cursor: pointer;
+}
+
+/* =============================================================================
+   Botones
+   ============================================================================= */
+.form-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.btn-primary,
+.btn-secondary,
+.btn-outline {
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.95rem;
+    font-weight: 600;
+    font-family: inherit;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #1565C0, #0D47A1);
+    color: white;
+    flex: 1;
+    box-shadow: 0 4px 12px rgba(21, 101, 192, 0.3);
+}
+
+.btn-primary:hover:not(:disabled) {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(21, 101, 192, 0.4);
+}
+
+.btn-primary:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+}
+
+.btn-secondary {
+    background: #F0F4F8;
+    color: #555;
+    border: 2px solid #E0E0E0;
+}
+
+.btn-secondary:hover {
+    background: #E0E7EF;
+}
+
+.btn-outline {
+    background: transparent;
+    color: #1565C0;
+    border: 2px solid #1565C0;
+    text-decoration: none;
+    width: 100%;
+    text-align: center;
+}
+
+.btn-outline:hover {
+    background: rgba(21, 101, 192, 0.06);
+}
+
+.btn-icon {
+    font-size: 1.2rem;
+}
+
+/* Spinner de carga */
+.spinner {
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* =============================================================================
+   Resultado de predicción
+   ============================================================================= */
+.result-card,
+.error-card {
+    margin-top: 24px;
+    border-radius: 12px;
+    overflow: hidden;
+    animation: slideIn 0.4s ease-out;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.result-card {
+    background: linear-gradient(135deg, #E8F5E9, #C8E6C9);
+    border: 2px solid #4CAF50;
+}
+
+.result-header {
+    background: rgba(76, 175, 80, 0.1);
+    padding: 16px 24px;
+}
+
+.result-header h3 {
+    color: #2E7D32;
+    font-size: 1rem;
+}
+
+.result-body {
+    padding: 20px 24px;
+}
+
+.result-amount {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
+    margin-bottom: 12px;
+}
+
+.result-label {
+    font-size: 0.95rem;
+    color: #555;
+}
+
+.result-value {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #2E7D32;
+}
+
+.result-details {
+    font-size: 0.85rem;
+    color: #555;
+}
+
+.result-note {
+    margin-top: 8px;
+    padding: 8px 12px;
+    background: rgba(76, 175, 80, 0.08);
+    border-radius: 6px;
+    font-size: 0.8rem;
+}
+
+.error-card {
+    background: #FFEBEE;
+    border: 2px solid #F44336;
+    padding: 16px 24px;
+    color: #C62828;
+    font-size: 0.9rem;
+}
+
+.hidden {
+    display: none !important;
+}
+
+/* =============================================================================
+   Sidebar — Lista de factores
+   ============================================================================= */
+.factor-list {
+    list-style: none;
+    padding: 0;
+}
+
+.factor-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 10px 0;
+    border-bottom: 1px solid #F0F0F0;
+    font-size: 0.85rem;
+}
+
+.factor-list li:last-child {
+    border-bottom: none;
+}
+
+.factor-icon {
+    font-size: 1.2rem;
+    flex-shrink: 0;
+}
+
+.dashboard-link {
+    margin-top: 20px;
+}
+
+/* =============================================================================
+   Dashboard — Grid de gráficas
+   ============================================================================= */
+.dashboard-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    margin-bottom: 30px;
+}
+
+.chart-card {
+    background: white;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.chart-header {
+    margin-bottom: 16px;
+}
+
+.chart-header h3 {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #1565C0;
+    margin-bottom: 6px;
+}
+
+.chart-desc {
+    font-size: 0.85rem;
+    color: #666;
+}
+
+.chart-desc code {
+    background: #F0F4F8;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    color: #1565C0;
+}
+
+.chart-container {
+    width: 100%;
+    height: 450px;
+}
+
+/* =============================================================================
+   Footer
+   ============================================================================= */
+.footer {
+    text-align: center;
+    padding: 24px 0;
+    font-size: 0.85rem;
+    color: #888;
+    border-top: 1px solid #E0E0E0;
+}
+
+.footer p {
+    margin-bottom: 4px;
+}
+
+/* =============================================================================
+   Responsive: tablets y móviles
+   ============================================================================= */
+@media (max-width: 768px) {
+    .main-content {
+        grid-template-columns: 1fr;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .header {
+        padding: 24px;
+    }
+
+    .header-content h1 {
+        font-size: 1.4rem;
+    }
+
+    .form-actions {
+        flex-direction: column;
+    }
+
+    .chart-container {
+        height: 350px;
+    }
+}

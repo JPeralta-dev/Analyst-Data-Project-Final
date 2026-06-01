@@ -1,0 +1,39 @@
+\section{Metodología}
+
+\subsection{Dataset}
+El Spotify Tracks Dataset contiene 114,000 canciones distribuidas en 125
+géneros musicales \cite{spotifyKaggle}. Cada registro incluye metadatos
+(artista, álbum, género) y 10 características de audio cuantitativas
+normalizadas por Spotify mediante análisis de señal.
+
+\subsection{Preprocesamiento}
+Las características seleccionadas para el clustering fueron: danceability,
+energy, loudness, speechiness, acousticness, instrumentalness, liveness,
+valence, tempo y popularity. Se aplicó \texttt{StandardScaler} para
+normalizar cada feature a media cero y desviación estándar unitaria,
+requisito fundamental para K-Means dado su dependencia de distancias
+euclidianas \cite{jain2010data}.
+
+\subsection{Algoritmo K-Means}
+K-Means minimiza la inercia intra-cluster:
+\begin{equation}
+J = \sum_{k=1}^{K} \sum_{\mathbf{x}_i \in C_k} \|\mathbf{x}_i - \boldsymbol{\mu}_k\|^2
+\end{equation}
+donde $\boldsymbol{\mu}_k$ es el centroide del cluster $C_k$.
+
+\subsection{Selección de K}
+Se evaluaron valores de $K \in \{2, \ldots, 10\}$ utilizando:
+\begin{itemize}
+  \item \textbf{Método del Codo}: punto de inflexión en la curva de inercia.
+  \item \textbf{Silhouette Score}: mide cohesión interna y separación entre clusters.
+        Rango $[-1, 1]$; valores cercanos a 1 indican clusters bien definidos.
+\end{itemize}
+
+\subsection{Reducción Dimensional --- PCA}
+PCA transforma el espacio de 10 dimensiones a 2 componentes principales
+para visualización, preservando la máxima varianza posible:
+\begin{equation}
+\mathbf{Z} = \mathbf{X} \mathbf{W}_{2}
+\end{equation}
+donde $\mathbf{W}_2$ contiene los dos eigenvectores de mayor eigenvalor
+de la matriz de covarianza $\mathbf{\Sigma}$.

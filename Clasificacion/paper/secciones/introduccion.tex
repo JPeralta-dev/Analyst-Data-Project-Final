@@ -1,0 +1,41 @@
+% ============================================================
+% introduccion.tex — Introducción y objetivos del trabajo
+% ============================================================
+\section{Introducción}
+
+El fraude con tarjetas de crédito es un fenómeno delictivo que genera
+pérdidas millonarias a nivel mundial. Según la Nilson Report, las pérdidas
+globales por fraude en pagos con tarjeta superaron los 32 mil millones de
+dólares en 2021, con proyecciones de crecimiento sostenido \cite{nilson2021}.
+La detección temprana de estas actividades ilícitas es crucial para proteger
+tanto a los consumidores como a las instituciones financieras.
+
+Los métodos tradicionales de detección de fraude, basados en reglas
+heurísticas, presentan limitaciones importantes frente a la evolución
+constante de las tácticas fraudulentas. El aprendizaje automático ofrece
+una alternativa adaptativa y escalable, capaz de identificar patrones
+complejos y no lineales en grandes volúmenes de datos transaccionales
+\cite{dal2015learned}.
+
+El principal desafío técnico de este problema es el severo desbalance de
+clases: en un entorno real, la proporción de transacciones fraudulentas
+es menor al 1\% del total. Esto provoca que los clasificadores estándar
+tiendan a predecir siempre la clase mayoritaria, logrando alta exactitud
+pero fallando en detectar los fraudes, que son precisamente el objetivo
+\cite{chawla2002smote}.
+
+Este trabajo aborda el problema mediante la metodología CRISP-DM
+\cite{wirth2000crisp}, aplicando técnicas de sobremuestreo sintético
+(SMOTE) y comparando el rendimiento de cuatro algoritmos de clasificación.
+El objetivo es construir un modelo robusto que maximice el recall de la
+clase fraude, minimizando así las pérdidas financieras causadas por
+transacciones no detectadas.
+
+\subsection{Objetivos}
+\begin{itemize}
+  \item Implementar un pipeline completo de detección de fraude siguiendo CRISP-DM.
+  \item Comparar el rendimiento de Regresión Logística, Random Forest,
+        XGBoost y Gradient Boosting.
+  \item Manejar el desbalance de clases mediante SMOTE.
+  \item Desplegar el modelo como servicio web con visualización interactiva.
+\end{itemize}

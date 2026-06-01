@@ -1,0 +1,30 @@
+\section{Introducción}
+
+El gasto en salud representa uno de los principales desafíos financieros
+para individuos y sistemas de cobertura médica. En Estados Unidos, el gasto
+per cápita en salud superó los \$12,500 dólares anuales en 2020,
+representando el 19.7\% del PIB \cite{cms2022national}. La capacidad de
+predecir con precisión los costos médicos individuales permite a las
+aseguradoras fijar primas justas, gestionar riesgos y diseñar programas
+de prevención dirigidos.
+
+Los modelos de regresión supervisada han demostrado ser herramientas
+eficaces para la predicción de costos médicos, capturando tanto relaciones
+lineales como interacciones complejas entre variables demográficas y
+factores de riesgo como el tabaquismo o el Índice de Masa Corporal
+(IMC) \cite{duan2021prediction}.
+
+Este trabajo implementa y compara múltiples algoritmos de regresión sobre
+el Medical Cost Personal Dataset, explorando el impacto de la ingeniería
+de features en el rendimiento predictivo. Se presta especial atención a la
+interacción BMI-tabaquismo, identificada en la literatura como uno de los
+predictores más potentes del gasto médico elevado.
+
+\subsection{Objetivos}
+\begin{itemize}
+  \item Comparar seis modelos de regresión aplicando CRISP-DM.
+  \item Evaluar el impacto de la ingeniería de features (interacciones,
+        transformaciones no lineales) en la predicción.
+  \item Identificar los factores más influyentes en el costo del seguro.
+  \item Desplegar el modelo ganador como servicio web con Flask y Plotly.
+\end{itemize}

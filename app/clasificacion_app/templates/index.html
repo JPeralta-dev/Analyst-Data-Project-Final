@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<!-- ============================================================
+     index.html — Formulario de predicción de fraude
+     ============================================================ -->
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detección de Fraude — Formulario</title>
+    <!-- CSS personalizado -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- CDN de Plotly para gráficas (si se necesitan en el futuro) -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <!-- ============================================================
+         ENCABEZADO Y NAVEGACIÓN
+         ============================================================ -->
+    <header>
+        <div class="container">
+            <h1>🔍 Detección de Fraude</h1>
+            <p>Clasificación de transacciones con tarjeta de crédito</p>
+            <nav>
+                <a href="/" class="active">Formulario</a>
+                <a href="/dashboard">Dashboard</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ============================================================
+         CONTENEDOR PRINCIPAL
+         ============================================================ -->
+    <main class="container">
+        <h2>Ingrese los datos de la transacción</h2>
+        <p class="subtitle">Complete los 30 campos (V1-V28, Time, Amount) para determinar si la transacción es fraudulenta.</p>
+
+        <!-- ============================================================
+             FORMULARIO DE PREDICCIÓN
+             ============================================================ -->
+        <form id="predictForm">
+            <!-- Fila de campos V1-V28 en 4 columnas -->
+            <div class="field-group">
+                <h3>Componentes PCA (V1 - V28)</h3>
+                <div class="grid-4">
+                    {% for i in range(1, 29) %}
+                    <div class="form-group">
+                        <label for="V{{ i }}">V{{ i }}</label>
+                        <input type="number" step="any" id="V{{ i }}" name="V{{ i }}" placeholder="0.0" required>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <!-- Campos Time y Amount -->
+            <div class="field-group">
+                <h3>Tiempo y Monto</h3>
+                <div class="grid-2">
+                    <div class="form-group">
+                        <label for="Time">Time (segundos)</label>
+                        <input type="number" step="any" id="Time" name="Time" placeholder="0.0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="Amount">Amount (€)</label>
+                        <input type="number" step="any" id="Amount" name="Amount" placeholder="0.0" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Botón de envío -->
+            <button type="submit" class="btn-predict">Predecir</button>
+        </form>
+
+        <!-- ============================================================
+             SECCIÓN DE RESULTADO (se muestra después de la predicción)
+             ============================================================ -->
+        <div id="resultado" class="result-card hidden">
+            <h3>Resultado de la Predicción</h3>
+            <div id="resultContent">
+                <!-- El contenido se llena dinámicamente con JavaScript -->
+            </div>
+        </div>
+    </main>
+
+    <!-- ============================================================
+     JAVASCRIPT: Lógica de envío del formulario vía Fetch API
+     ============================================================ -->
+    <script>
+        // Obtenemos referencia al formulario
+        const form = document.getElementById('predictForm');
+        const resultadoDiv = document.getElementById('resultado');
+        const resultContent = document.getElementById('resultContent');
+
+        // Manejador del evento submit del formulario
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();  // Evitamos la recarga de la página
+
+            // Recopilamos todos los valores del formulario
+            const formData = new FormData(form);
+            const data = {};
+
+            // Convertimos FormData a objeto JSON
+            for (let [key, value] of formData.entries()) {
+                data[key] = value;
+            }
+
+            try {
+                // Enviamos los datos al endpoint /predict via POST
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                // Parseamos la respuesta JSON
+                const result = await response.json();
+
+                // Mostramos la sección de resultado
+                resultadoDiv.classList.remove('hidden');
+
+                // Construimos el HTML del resultado según la predicción
+                if (result.prediccion === 'FRAUDE') {
+                    // Caso: transacción fraudulenta — fondo rojo
+                    resultContent.innerHTML = `
+                        <div class="alert alert-danger">
+                            <h4>⚠️ ${result.mensaje}</h4>
+                            <p><strong>Predicción:</strong> ${result.prediccion}</p>
+                            <p><strong>Probabilidad de fraude:</strong> ${(result.probabilidad * 100).toFixed(2)}%</p>
+                        </div>
+                    `;
+                } else {
+                    // Caso: transacción legítima — fondo verde
+                    resultContent.innerHTML = `
+                        <div class="alert alert-success">
+                            <h4>✅ ${result.mensaje}</h4>
+                            <p><strong>Predicción:</strong> ${result.prediccion}</p>
+                            <p><strong>Probabilidad de fraude:</strong> ${(result.probabilidad * 100).toFixed(2)}%</p>
+                        </div>
+                    `;
+                }
+            } catch (error) {
+                // En caso de error, mostramos un mensaje
+                resultadoDiv.classList.remove('hidden');
+                resultContent.innerHTML = `
+                    <div class="alert alert-error">
+                        <h4>❌ Error</h4>
+                        <p>${error.message}</p>
+                    </div>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<!-- ============================================================
+     dashboard.html — Dashboard de visualizaciones interactivas
+     ============================================================ -->
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — Detección de Fraude</title>
+    <!-- CSS personalizado -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <!-- CDN de Plotly para renderizar las gráficas -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <!-- ============================================================
+         ENCABEZADO Y NAVEGACIÓN
+         ============================================================ -->
+    <header>
+        <div class="container">
+            <h1>📊 Dashboard de Fraude</h1>
+            <p>Visualizaciones interactivas del dataset de transacciones</p>
+            <nav>
+                <a href="/">Formulario</a>
+                <a href="/dashboard" class="active">Dashboard</a>
+            </nav>
+        </div>
+    </header>
+
+    <!-- ============================================================
+         CONTENEDOR DE GRÁFICAS
+         ============================================================ -->
+    <main class="container">
+        <h2>Visualizaciones del Dataset</h2>
+        <p class="subtitle">Gráficas interactivas generadas con Plotly a partir del dataset de transacciones.</p>
+
+        {% if error %}
+        <!-- Mensaje de error si no hay datos -->
+        <div class="alert alert-error">
+            <p>{{ error }}</p>
+        </div>
+        {% else %}
+        <!-- ============================================================
+             GRID DE GRÁFICAS
+             Cada gráfica se renderiza en un div con id único
+             ============================================================ -->
+        <div class="dashboard-grid">
+            <div class="chart-card">
+                <div id="grafica1" class="chart-container"></div>
+            </div>
+            <div class="chart-card">
+                <div id="grafica2" class="chart-container"></div>
+            </div>
+            <div class="chart-card">
+                <div id="grafica3" class="chart-container"></div>
+            </div>
+            <div class="chart-card">
+                <div id="grafica4" class="chart-container"></div>
+            </div>
+        </div>
+        {% endif %}
+    </main>
+
+    <!-- ============================================================
+     JAVASCRIPT: Renderizar gráficas con Plotly
+     ============================================================ -->
+    <script>
+        // Lista de gráficas JSON generadas por el backend
+        const graficas = [
+            {% for g in graficas %}
+                {{ g | safe }},
+            {% endfor %}
+        ];
+
+        // IDs de los divs donde se renderizará cada gráfica
+        const divIds = ['grafica1', 'grafica2', 'grafica3', 'grafica4'];
+
+        // Renderizamos cada gráfica en su contenedor correspondiente
+        graficas.forEach((fig, index) => {
+            if (fig && fig.data && fig.data.length > 0) {
+                Plotly.newPlot(divIds[index], fig.data, fig.layout, {
+                    responsive: true,
+                    displayModeBar: true,
+                    displaylogo: false
+                });
+            }
+        });
+
+        // Hacemos que las gráficas se adapten al cambiar el tamaño de la ventana
+        window.addEventListener('resize', function() {
+            divIds.forEach(id => {
+                const plot = document.getElementById(id);
+                if (plot) {
+                    Plotly.Plots.resize(plot);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

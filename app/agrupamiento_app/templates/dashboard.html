@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📊 Dashboard — Agrupamiento Spotify</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- ============================================================ -->
+        <!-- HEADER -->
+        <!-- ============================================================ -->
+        <header class="header">
+            <div class="logo">
+                <span class="logo-icon">📊</span>
+                <h1>Dashboard Interactivo</h1>
+            </div>
+            <p class="subtitle">
+                Visualización de los clusters de Spotify y características de audio
+            </p>
+        </header>
+
+        <!-- ============================================================ -->
+        <!-- GRÁFICA 1: PCA 2D Scatter -->
+        <!-- ============================================================ -->
+        <div class="chart-card">
+            <h2>Proyección PCA 2D de Clusters</h2>
+            <p class="chart-desc">
+                Cada punto representa una canción proyectada en 2 dimensiones mediante PCA.
+                Los colores indican el cluster asignado por K-Means.
+            </p>
+            <div id="grafica-pca" class="chart-container"></div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- GRÁFICA 2: Radar Chart -->
+        <!-- ============================================================ -->
+        <div class="chart-card">
+            <h2>Perfil de Audio por Cluster</h2>
+            <p class="chart-desc">
+                Gráfico radial que muestra el perfil promedio de cada cluster
+                en las principales características de audio.
+            </p>
+            <div id="grafica-radar" class="chart-container"></div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- GRÁFICA 3: Distribución de Features -->
+        <!-- ============================================================ -->
+        <div class="chart-card">
+            <h2>Distribución de Características de Audio</h2>
+            <p class="chart-desc">
+                Histogramas superpuestos que muestran cómo se distribuyen las
+                principales características en el dataset completo.
+            </p>
+            <div id="grafica-dist" class="chart-container"></div>
+        </div>
+
+        <!-- ============================================================ -->
+        <!-- FOOTER -->
+        <!-- ============================================================ -->
+        <footer class="footer">
+            <p>
+                <a href="/" class="btn-secondary">← Volver al Predictor</a>
+            </p>
+            <p class="footer-text">
+                Proyecto Final — Ciencia de Datos | Universidad Popular del Cesar
+            </p>
+        </footer>
+    </div>
+
+    <!-- ============================================================ -->
+    <!-- SCRIPTS: Renderizar gráficas Plotly -->
+    <!-- ============================================================ -->
+    <script>
+        // Gráfica 1: PCA Scatter
+        const dataPca = {{ grafica_pca | safe }};
+        Plotly.newPlot('grafica-pca', dataPca.data, dataPca.layout, {
+            responsive: true,
+            displayModeBar: true,
+            modeBarButtonsToRemove: ['toImage', 'sendDataToCloud']
+        });
+
+        // Gráfica 2: Radar Chart
+        const dataRadar = {{ grafica_radar | safe }};
+        Plotly.newPlot('grafica-radar', dataRadar.data, dataRadar.layout, {
+            responsive: true,
+            displayModeBar: true,
+            modeBarButtonsToRemove: ['toImage', 'sendDataToCloud']
+        });
+
+        // Gráfica 3: Distribución de features
+        const dataDist = {{ grafica_dist | safe }};
+        Plotly.newPlot('grafica-dist', dataDist.data, dataDist.layout, {
+            responsive: true,
+            displayModeBar: true,
+            modeBarButtonsToRemove: ['toImage', 'sendDataToCloud']
+        });
+
+        // Ajustar tamaño al cargar
+        window.addEventListener('resize', function() {
+            Plotly.Plots.resize(document.getElementById('grafica-pca'));
+            Plotly.Plots.resize(document.getElementById('grafica-radar'));
+            Plotly.Plots.resize(document.getElementById('grafica-dist'));
+        });
+    </script>
+</body>
+</html>

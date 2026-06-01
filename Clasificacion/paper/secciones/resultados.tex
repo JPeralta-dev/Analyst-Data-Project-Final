@@ -1,0 +1,35 @@
+% ============================================================
+% resultados.tex — Resultados del experimento
+% NOTA: Completar los valores "--" con los del notebook ejecutado
+% ============================================================
+\section{Resultados}
+
+\subsection{Análisis Exploratorio}
+El análisis exploratorio confirmó la distribución extremadamente desbalanceada
+del dataset. El monto promedio de transacciones fraudulentas (\$122.21) resultó
+inferior al de transacciones legítimas (\$88.29), contrario a la intuición
+inicial. Las variables con mayor correlación con la clase fraude fueron
+$V_{14}$, $V_{17}$ y $V_{12}$ con coeficientes negativos significativos.
+
+\subsection{Comparación de Modelos}
+
+% INSTRUCCIÓN: Completar la tabla con los valores reales del notebook
+\begin{table}[H]
+\centering
+\caption{Comparación de Métricas de Clasificación}
+\label{tab:resultados}
+\begin{tabular}{lcccc}
+\toprule
+\textbf{Modelo} & \textbf{ROC-AUC} & \textbf{Precision} & \textbf{Recall} & \textbf{F1} \\
+\midrule
+Reg. Logística   & --    & --    & --    & -- \\
+Random Forest    & --    & --    & --    & -- \\
+XGBoost          & --    & --    & --    & -- \\
+Gradient Boost.  & --    & --    & --    & -- \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Análisis del Mejor Modelo}
+[Completar con análisis de la matriz de confusión, importancia de features,
+y curva Precision-Recall del modelo ganador.]

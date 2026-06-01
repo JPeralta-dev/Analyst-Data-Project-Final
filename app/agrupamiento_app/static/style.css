@@ -1,0 +1,385 @@
+/* ==========================================================================
+   ESTILOS — App Agrupamiento Spotify
+   ==========================================================================
+   Paleta de colores basada en la marca Spotify:
+   - Verde principal: #1DB954
+   - Verde oscuro: #169C46
+   - Fondo oscuro: #191414
+   - Superficies: #282828
+   - Texto principal: #FFFFFF
+   - Texto secundario: #B3B3B3
+   ========================================================================== */
+
+/* ==========================================================================
+   RESET Y VARIABLES GLOBALES
+   ========================================================================== */
+:root {
+    --spotify-green: #1DB954;
+    --spotify-green-hover: #169C46;
+    --spotify-green-light: #1ED760;
+    --bg-dark: #191414;
+    --bg-card: #282828;
+    --bg-card-hover: #333333;
+    --text-primary: #FFFFFF;
+    --text-secondary: #B3B3B3;
+    --border-color: #404040;
+    --error: #F44336;
+    --success: #4CAF50;
+    --radius: 12px;
+    --radius-sm: 8px;
+    --shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    --transition: all 0.3s ease;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+/* ==========================================================================
+   LAYOUT GENERAL
+   ========================================================================== */
+.container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem;
+}
+
+/* ==========================================================================
+   HEADER
+   ========================================================================== */
+.header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+}
+
+.logo-icon {
+    font-size: 2.5rem;
+}
+
+.logo h1 {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+}
+
+.subtitle {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+/* ==========================================================================
+   TARJETAS (FORMULARIO, RESULTADO, GRÁFICAS)
+   ========================================================================== */
+.form-card,
+.result-card,
+.chart-card {
+    background: var(--bg-card);
+    border-radius: var(--radius);
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    box-shadow: var(--shadow);
+}
+
+.form-card h2,
+.result-card h2,
+.chart-card h2 {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--spotify-green);
+}
+
+.form-hint,
+.chart-desc {
+    color: var(--text-secondary);
+    font-size: 0.875rem;
+    margin-bottom: 1.5rem;
+}
+
+/* ==========================================================================
+   SLIDERS
+   ========================================================================== */
+.sliders-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+}
+
+@media (max-width: 640px) {
+    .sliders-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.slider-group {
+    margin-bottom: 0.5rem;
+}
+
+.slider-group label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-primary);
+    margin-bottom: 0.5rem;
+    text-transform: capitalize;
+}
+
+.tooltip {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    font-weight: 400;
+    cursor: help;
+    border-bottom: 1px dashed var(--border-color);
+}
+
+.slider-container {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+input[type="range"] {
+    flex: 1;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 6px;
+    background: var(--border-color);
+    border-radius: 3px;
+    outline: none;
+    transition: var(--transition);
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--spotify-green);
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: 0 2px 6px rgba(29, 185, 84, 0.4);
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
+    background: var(--spotify-green-light);
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--spotify-green);
+    cursor: pointer;
+    border: none;
+}
+
+.slider-value {
+    min-width: 55px;
+    text-align: right;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--spotify-green);
+    font-variant-numeric: tabular-nums;
+}
+
+/* ==========================================================================
+   BOTÓN DE PREDICCIÓN
+   ========================================================================== */
+.btn-predict {
+    width: 100%;
+    padding: 1rem 2rem;
+    margin-top: 1.5rem;
+    background: var(--spotify-green);
+    color: #000;
+    border: none;
+    border-radius: 50px;
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.btn-predict:hover {
+    background: var(--spotify-green-light);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(29, 185, 84, 0.3);
+}
+
+.btn-predict:active {
+    transform: translateY(0);
+}
+
+.btn-predict:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none;
+}
+
+.btn-secondary {
+    display: inline-block;
+    padding: 0.75rem 1.5rem;
+    background: transparent;
+    color: var(--text-primary);
+    border: 2px solid var(--spotify-green);
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: var(--transition);
+}
+
+.btn-secondary:hover {
+    background: var(--spotify-green);
+    color: #000;
+}
+
+/* ==========================================================================
+   RESULTADO DE PREDICCIÓN
+   ========================================================================== */
+.hidden {
+    display: none !important;
+}
+
+.result-content {
+    text-align: center;
+    padding: 1.5rem 0;
+}
+
+.cluster-badge {
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    border-radius: 50px;
+    font-size: 1.25rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+    background: var(--spotify-green);
+    color: #000;
+}
+
+/* Colores por cluster */
+.cluster-0 { background: #E41A1C; color: white; }
+.cluster-1 { background: #377EB8; color: white; }
+.cluster-2 { background: #4DAF4A; color: white; }
+.cluster-3 { background: #984EA3; color: white; }
+.cluster-4 { background: #FF7F00; color: white; }
+.cluster-5 { background: #A65628; color: white; }
+
+.result-content h3 {
+    font-size: 1.5rem;
+    margin-bottom: 0.75rem;
+    color: var(--text-primary);
+}
+
+.result-content p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    max-width: 500px;
+    margin: 0 auto 1rem;
+}
+
+.cluster-meta {
+    font-size: 0.875rem;
+    color: var(--text-secondary);
+    margin-top: 0.5rem;
+}
+
+.cluster-meta strong {
+    color: var(--spotify-green);
+}
+
+/* ==========================================================================
+   DASHBOARD — GRÁFICAS
+   ========================================================================== */
+.chart-card {
+    padding: 1.5rem;
+}
+
+.chart-container {
+    width: 100%;
+    height: 500px;
+}
+
+.chart-container .js-plotly-plot,
+.chart-container .plot-container {
+    width: 100% !important;
+    height: 100% !important;
+}
+
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+.footer {
+    text-align: center;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border-color);
+    margin-top: 1rem;
+}
+
+.footer p {
+    margin-bottom: 0.75rem;
+}
+
+.footer-text {
+    color: var(--text-secondary);
+    font-size: 0.8rem;
+}
+
+/* ==========================================================================
+   ANIMACIONES
+   ========================================================================== */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-10px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.result-card:not(.hidden) {
+    animation: fadeIn 0.4s ease;
+}
+
+/* ==========================================================================
+   SCROLLBAR PERSONALIZADA
+   ========================================================================== */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-dark);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+}

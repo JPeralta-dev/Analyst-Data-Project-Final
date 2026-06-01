@@ -1,0 +1,41 @@
+\section{Metodología}
+
+\subsection{Dataset}
+El Medical Cost Personal Dataset contiene 1,338 registros sin valores
+nulos, con 6 variables predictoras (age, sex, bmi, children, smoker,
+region) y una variable objetivo continua (charges en USD) \cite{insuranceKaggle}.
+La distribución de charges presenta asimetría positiva (skewness $> 1.5$),
+característica típica de datos de costos médicos.
+
+\subsection{Ingeniería de Features}
+Se realizaron las siguientes transformaciones:
+\begin{itemize}
+  \item \textbf{Codificación}: One-hot encoding para \textit{region};
+        codificación binaria para \textit{sex} y \textit{smoker}.
+  \item \textbf{Interacción}: $\text{bmi\_smoker} = \text{bmi} \times \text{smoker\_enc}$,
+        captura el efecto sinérgico entre obesidad y tabaquismo.
+  \item \textbf{No-linealidad}: $\text{age\_sq} = \text{age}^2$, modela
+        el incremento acelerado de costos médicos con la edad.
+\end{itemize}
+
+\subsection{Modelos}
+
+\subsubsection{Regresión Lineal / Ridge / Lasso}
+Modelos paramétricos que minimizan el error cuadrático:
+\begin{equation}
+\hat{\mathbf{w}} = \arg\min_{\mathbf{w}} \|\mathbf{y} - \mathbf{X}\mathbf{w}\|^2 + \lambda\Omega(\mathbf{w})
+\end{equation}
+donde $\Omega(\mathbf{w}) = \|\mathbf{w}\|_2^2$ (Ridge) o $\|\mathbf{w}\|_1$ (Lasso).
+
+\subsubsection{Random Forest / XGBoost / Gradient Boosting}
+Métodos de ensemble basados en árboles de decisión. XGBoost optimiza:
+\begin{equation}
+\mathcal{L} = \sum_i (y_i - \hat{y}_i)^2 + \sum_k \Omega(f_k)
+\end{equation}
+
+\subsection{Métricas de Evaluación}
+\begin{itemize}
+  \item $\text{MAE} = \frac{1}{n}\sum|y_i - \hat{y}_i|$ -- error en dólares USD
+  \item $\text{RMSE} = \sqrt{\frac{1}{n}\sum(y_i - \hat{y}_i)^2}$ -- penaliza errores grandes
+  \item $R^2 = 1 - \frac{SS_{res}}{SS_{tot}}$ -- bondad de ajuste global
+\end{itemize}

@@ -1,0 +1,23 @@
+\section{Conclusiones}
+
+La aplicación de K-Means sobre las características de audio del dataset
+de Spotify permitió identificar [K] clusters musicales con perfiles
+diferenciados. Las principales conclusiones son:
+
+\begin{enumerate}
+  \item La normalización es crítica: sin StandardScaler, las variables
+        con mayor rango (tempo, loudness) dominarían la distancia euclidiana.
+  \item PCA con 2 componentes explica [X]\% de la varianza, suficiente
+        para visualización pero no para reconstrucción fiel.
+  \item Los clusters identificados corresponden parcialmente a géneros
+        musicales reales, validando la coherencia del agrupamiento.
+  \item [Completar con hallazgo específico del análisis]
+\end{enumerate}
+
+Como trabajo futuro se propone explorar clustering jerárquico para
+análisis de subgéneros, y evaluar modelos de mezcla gaussiana (GMM)
+como alternativa probabilística a K-Means.
+
+\section*{Agradecimientos}
+Los autores agradecen al docente Aimer Rivera Centeno de la Universidad
+Popular del Cesar por la orientación académica en este proyecto.

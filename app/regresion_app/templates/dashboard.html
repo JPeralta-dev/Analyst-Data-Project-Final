@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard — Seguro Médico</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Encabezado -->
+        <header class="header">
+            <div class="header-content">
+                <h1>📊 Dashboard Interactivo — Seguro Médico</h1>
+                <p class="subtitle">
+                    Visualización exploratoria del dataset Medical Cost Personal y rendimiento del modelo de regresión.
+                </p>
+                <a href="/" class="btn-back">← Volver al Formulario</a>
+            </div>
+        </header>
+
+        <!-- Grid de gráficas -->
+        <div class="dashboard-grid">
+            <!-- Gráfica 1: Distribución de Charges -->
+            <div class="chart-card full-width">
+                <div class="chart-header">
+                    <h3>Distribución de Costos de Seguro</h3>
+                    <p class="chart-desc">
+                        Histograma con la distribución de la variable objetivo <code>charges</code>.
+                        La línea roja marca la media del dataset (\$13,270).
+                        Se observa una asimetría positiva (cola derecha larga).
+                    </p>
+                </div>
+                <div id="grafica1" class="chart-container"></div>
+            </div>
+
+            <!-- Gráfica 2: Charges por Fumador -->
+            <div class="chart-card full-width">
+                <div class="chart-header">
+                    <h3>Costo del Seguro: Fumadores vs No Fumadores</h3>
+                    <p class="chart-desc">
+                        Boxplot comparativo. Los fumadores pagan en promedio 3.8x más que los no fumadores.
+                        Este es el factor más determinante del costo del seguro.
+                    </p>
+                </div>
+                <div id="grafica2" class="chart-container"></div>
+            </div>
+
+            <!-- Gráfica 3: Real vs Predicho -->
+            <div class="chart-card full-width">
+                <div class="chart-header">
+                    <h3>Real vs Predicho — Precisión del Modelo</h3>
+                    <p class="chart-desc">
+                        Diagrama de dispersión que compara los valores reales con las predicciones del modelo.
+                        Los puntos sobre la línea diagonal representan predicciones perfectas.
+                        Los puntos rojos son fumadores, los azules son no fumadores.
+                    </p>
+                </div>
+                <div id="grafica3" class="chart-container"></div>
+            </div>
+
+            <!-- Gráfica 4: Feature Importance -->
+            <div class="chart-card full-width">
+                <div class="chart-header">
+                    <h3>Importancia de Variables Predictoras</h3>
+                    <p class="chart-desc">
+                        Las variables más importantes según el modelo entrenado.
+                        <code>smoker_enc</code> y <code>bmi_smoker</code> dominan,
+                        confirmando que el tabaquismo y su interacción con el BMI
+                        son los predictores más fuertes.
+                    </p>
+                </div>
+                <div id="grafica4" class="chart-container"></div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p>Universidad Popular del Cesar — Ciencia de Datos | Metodología CRISP-DM</p>
+            <p>Docente: Aimer Rivera Centeno</p>
+        </footer>
+    </div>
+
+    <!-- Renderizar gráficas Plotly -->
+    <script>
+        // Cada gráfica se renderiza en su contenedor respectivo
+        // Los datos JSON vienen del backend Flask (app.py)
+        const graficas = {{ graficas | safe }};
+
+        const config = {
+            responsive: true,
+            displayModeBar: true,
+            displaylogo: false,
+            modeBarButtonsToRemove: ['lasso2d', 'select2d']
+        };
+
+        // Renderizar cada gráfica cuando el DOM esté listo
+        document.addEventListener('DOMContentLoaded', function() {
+            Plotly.newPlot('grafica1', graficas[0].data, graficas[0].layout, config);
+            Plotly.newPlot('grafica2', graficas[1].data, graficas[1].layout, config);
+            Plotly.newPlot('grafica3', graficas[2].data, graficas[2].layout, config);
+            Plotly.newPlot('grafica4', graficas[3].data, graficas[3].layout, config);
+        });
+
+        // Re-renderizar si la ventana cambia de tamaño (responsivo)
+        window.addEventListener('resize', function() {
+            Plotly.Plots.resize(document.getElementById('grafica1'));
+            Plotly.Plots.resize(document.getElementById('grafica2'));
+            Plotly.Plots.resize(document.getElementById('grafica3'));
+            Plotly.Plots.resize(document.getElementById('grafica4'));
+        });
+    </script>
+</body>
+</html>
