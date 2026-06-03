@@ -287,7 +287,7 @@ def dashboard():
             labels={'importance': 'Importancia relativa', 'feature': 'Variable'},
             color='importance',
             color_continuous_scale='Viridis',
-            text_auto='.2%'
+            text_auto='.2%' # type: ignore
         )
         fig4.update_layout(yaxis=dict( autorange='reversed'))  # mayor importancia arriba
     else:
