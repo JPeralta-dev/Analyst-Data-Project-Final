@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Proyecto Final — Ciencia de Datos</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <!-- ================================================================ -->
+    <!-- HEADER -->
+    <!-- ================================================================ -->
+    <header class="main-header">
+        <div class="header-inner">
+            <div>
+                <h1>Proyecto Final — Ciencia de Datos</h1>
+                <p>Universidad Popular del Cesar · Docente: Aimer Rivera Centeno · Metodología CRISP-DM</p>
+            </div>
+            <span class="header-badge">3 Casos de Estudio</span>
+        </div>
+    </header>
+
+    <!-- ================================================================ -->
+    <!-- TAB NAVIGATION -->
+    <!-- ================================================================ -->
+    <nav class="tab-nav">
+        <button class="tab-btn active" data-tab="tab-clasificacion">
+            🔴 Clasificación <span>Detección de Fraude</span>
+        </button>
+        <button class="tab-btn" data-tab="tab-agrupamiento">
+            🎵 Agrupamiento <span>Spotify Clustering</span>
+        </button>
+        <button class="tab-btn" data-tab="tab-regresion">
+            🏥 Regresión <span>Costo de Seguro Médico</span>
+        </button>
+    </nav>
+
+    <!-- ================================================================ -->
+    <!-- TAB: CLASIFICACIÓN — DETECCIÓN DE FRAUDE -->
+    <!-- ================================================================ -->
+    <section id="tab-clasificacion" class="tab-content active">
+        <!-- Dataset Info -->
+        <div class="info-banner">
+            <h3>📊 Dataset: Credit Card Fraud Detection</h3>
+            <div class="info-grid">
+                <div><strong>284,807</strong> transacciones</div>
+                <div><strong>30</strong> variables (28 PCA + Time + Amount)</div>
+                <div><strong>0.17%</strong> son fraude (desbalance severo)</div>
+                <div><strong>4</strong> modelos: LR, RF, XGBoost, GB</div>
+            </div>
+            <p class="info-desc">
+                Predice si una transacción de tarjeta de crédito es fraudulenta. 
+                Las variables V1–V28 son componentes PCA anonimizados. Time es segundos desde la primera 
+                transacción, Amount es el monto en euros. <strong>Métrica principal: Recall</strong> (minimizar falsos negativos).
+            </p>
+        </div>
+
+        <!-- Form + Result -->
+        <div class="content-split">
+            <div class="form-panel">
+                <h2>🧪 Ingresá los datos de la transacción</h2>
+                <p class="form-hint">Completá V1–V28, Time y Amount</p>
+                {% if not fraude_ready %}
+                <div class="alert-warning">⚠️ Modelo no disponible. Ejecutá el notebook <code>fraude_clasificacion.ipynb</code> primero.</div>
+                {% endif %}
+                <form id="form-fraude">
+                    <div class="pca-grid" id="pca-inputs">
+                        <!-- V1-V28 generados dinámicamente -->
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Time (segundos)</label>
+                            <input type="number" step="any" id="fraude-time" value="0" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Amount (€)</label>
+                            <input type="number" step="any" id="fraude-amount" value="100" required>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary" {% if not fraude_ready %}disabled{% endif %}
+                            id="btn-fraude">🔍 Predecir</button>
+                </form>
+                <div id="result-fraude" class="result-card hidden"></div>
+            </div>
+
+            <div class="dash-panel">
+                <h2>📈 Dashboard</h2>
+                <button class="btn-secondary" onclick="loadDashboard('fraude')">Cargar Visualizaciones</button>
+                <div id="dash-fraude" class="dashboard-container"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- TAB: AGRUPAMIENTO — SPOTIFY CLUSTERING -->
+    <!-- ================================================================ -->
+    <section id="tab-agrupamiento" class="tab-content">
+        <!-- Dataset Info -->
+        <div class="info-banner">
+            <h3>📊 Dataset: Spotify Tracks (114,000 canciones)</h3>
+            <div class="info-grid">
+                <div><strong>114,000</strong> canciones</div>
+                <div><strong>125</strong> géneros musicales</div>
+                <div><strong>10</strong> features de audio</div>
+                <div><strong>K-Means</strong> con K óptimo (codo)</div>
+            </div>
+            <p class="info-desc">
+                Agrupa canciones según sus características de audio: danceability, energy, loudness, 
+                speechiness, acousticness, instrumentalness, liveness, valence, tempo y popularity. 
+                El algoritmo descubre patrones musicales sin etiquetas previas (aprendizaje no supervisado). 
+                <strong>Métrica principal: Silhouette Score.</strong>
+            </p>
+        </div>
+
+        <div class="content-split">
+            <div class="form-panel">
+                <h2>🎚️ Características de audio</h2>
+                <p class="form-hint">Ajustá los sliders según tu canción</p>
+                {% if not spotify_ready %}
+                <div class="alert-warning">⚠️ Modelo no disponible. Ejecutá el notebook <code>spotify_clustering.ipynb</code> primero.</div>
+                {% endif %}
+                <form id="form-spotify">
+                    <div class="sliders-grid" id="spotify-sliders">
+                        <!-- Sliders generados dinámicamente -->
+                    </div>
+                    <button type="submit" class="btn-primary" {% if not spotify_ready %}disabled{% endif %}
+                            id="btn-spotify">🎯 Predecir Cluster</button>
+                </form>
+                <div id="result-spotify" class="result-card hidden"></div>
+            </div>
+
+            <div class="dash-panel">
+                <h2>📈 Dashboard</h2>
+                <button class="btn-secondary" onclick="loadDashboard('spotify')">Cargar Visualizaciones</button>
+                <div id="dash-spotify" class="dashboard-container"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- TAB: REGRESIÓN — PREDICCIÓN DE SEGURO MÉDICO -->
+    <!-- ================================================================ -->
+    <section id="tab-regresion" class="tab-content">
+        <div class="info-banner">
+            <h3>📊 Dataset: Medical Cost Personal (1,338 registros)</h3>
+            <div class="info-grid">
+                <div><strong>1,338</strong> asegurados</div>
+                <div><strong>7</strong> variables originales</div>
+                <div><strong>10</strong> features tras ingeniería</div>
+                <div><strong>6</strong> modelos de regresión</div>
+            </div>
+            <p class="info-desc">
+                Predice el costo anual del seguro médico según edad, sexo, BMI, hijos, tabaquismo y región. 
+                El tabaquismo es el factor más determinante (3-4× el costo). 
+                Se aplicó ingeniería de features: interacción BMI×Tabaquismo y término cuadrático de edad. 
+                <strong>Métrica principal: R² y MAE.</strong>
+            </p>
+        </div>
+
+        <div class="content-split">
+            <div class="form-panel">
+                <h2>🏥 Datos del Paciente</h2>
+                <p class="form-hint">Completá todos los campos para estimar el costo</p>
+                {% if not seguro_ready %}
+                <div class="alert-warning">⚠️ Modelo no disponible. Ejecutá el notebook <code>seguro_regresion.ipynb</code> primero.</div>
+                {% endif %}
+                <form id="form-seguro">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>Edad</label>
+                            <input type="number" id="seguro-age" min="18" max="100" value="35" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Género</label>
+                            <select id="seguro-sex">
+                                <option value="female">Femenino</option>
+                                <option value="male">Masculino</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>BMI (kg/m²)</label>
+                            <input type="number" id="seguro-bmi" min="10" max="60" step="0.1" value="28.5" required>
+                        </div>
+                        <div class="form-group">
+                            <label>Hijos dependientes</label>
+                            <input type="number" id="seguro-children" min="0" max="10" value="0" required>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label>¿Fumador?</label>
+                            <select id="seguro-smoker">
+                                <option value="no">No</option>
+                                <option value="yes">Sí</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label>Región (EE.UU.)</label>
+                            <select id="seguro-region">
+                                <option value="southeast">Southeast</option>
+                                <option value="southwest">Southwest</option>
+                                <option value="northeast">Northeast</option>
+                                <option value="northwest">Northwest</option>
+                            </select>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn-primary" {% if not seguro_ready %}disabled{% endif %}
+                            id="btn-seguro">🔮 Estimar Costo</button>
+                </form>
+                <div id="result-seguro" class="result-card hidden"></div>
+            </div>
+
+            <div class="dash-panel">
+                <h2>📈 Dashboard</h2>
+                <button class="btn-secondary" onclick="loadDashboard('seguro')">Cargar Visualizaciones</button>
+                <div id="dash-seguro" class="dashboard-container"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ================================================================ -->
+    <!-- SCRIPTS -->
+    <!-- ================================================================ -->
+    <script>
+    // ============================================================
+    // TAB SWITCHING
+    // ============================================================
+    document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+            btn.classList.add('active');
+            document.getElementById(btn.dataset.tab).classList.add('active');
+            location.hash = btn.dataset.tab;
+        });
+    });
+
+    // Restore tab from URL hash
+    const hash = location.hash.replace('#', '');
+    if (hash) {
+        const btn = document.querySelector(`[data-tab="${hash}"]`);
+        if (btn) btn.click();
+    }
+
+    // ============================================================
+    // GENERATE PCA INPUTS (V1-V28)
+    // ============================================================
+    const pcaContainer = document.getElementById('pca-inputs');
+    for (let i = 1; i <= 28; i++) {
+        const div = document.createElement('div');
+        div.className = 'form-group pca-field';
+        div.innerHTML = `<label>V${i}</label><input type="number" step="any" id="fraude-v${i}" value="0" required>`;
+        pcaContainer.appendChild(div);
+    }
+
+    // ============================================================
+    // GENERATE SPOTIFY SLIDERS
+    // ============================================================
+    const sliders = [
+        {id:'danceability', name:'Danceability', min:0, max:1, step:0.01, val:0.5,
+         help:'Qué tan bailable es (0 = nada, 1 = muy bailable)'},
+        {id:'energy', name:'Energy', min:0, max:1, step:0.01, val:0.5,
+         help:'Intensidad y actividad percibida'},
+        {id:'loudness', name:'Loudness (dB)', min:-60, max:0, step:0.1, val:-30,
+         help:'Volumen promedio en decibelios'},
+        {id:'speechiness', name:'Speechiness', min:0, max:1, step:0.01, val:0.1,
+         help:'Presencia de palabras habladas'},
+        {id:'acousticness', name:'Acousticness', min:0, max:1, step:0.01, val:0.3,
+         help:'Probabilidad de ser acústica'},
+        {id:'instrumentalness', name:'Instrumentalness', min:0, max:1, step:0.01, val:0,
+         help:'Ausencia de voz (0 = tiene voz, 1 = instrumental puro)'},
+        {id:'liveness', name:'Liveness', min:0, max:1, step:0.01, val:0.2,
+         help:'Probabilidad de grabación en vivo'},
+        {id:'valence', name:'Valence', min:0, max:1, step:0.01, val:0.5,
+         help:'Positividad emocional (0 = triste, 1 = alegre)'},
+        {id:'tempo', name:'Tempo (BPM)', min:0, max:250, step:1, val:120,
+         help:'Velocidad en pulsos por minuto'},
+        {id:'popularity', name:'Popularity', min:0, max:100, step:1, val:50,
+         help:'Popularidad en Spotify (0-100)'}
+    ];
+
+    const slidersContainer = document.getElementById('spotify-sliders');
+    sliders.forEach(s => {
+        const div = document.createElement('div');
+        div.className = 'slider-group';
+        div.innerHTML = `
+            <label>${s.name} <span class="tooltip-text">${s.help}</span></label>
+            <div class="slider-row">
+                <input type="range" id="spotify-${s.id}" min="${s.min}" max="${s.max}"
+                       step="${s.step}" value="${s.val}">
+                <span class="slider-val" id="spotify-${s.id}-val">${s.val}</span>
+            </div>`;
+        slidersContainer.appendChild(div);
+
+        // Live value update
+        document.getElementById(`spotify-${s.id}`).addEventListener('input', function() {
+            const v = parseFloat(this.value);
+            const display = document.getElementById(`spotify-${s.id}-val`);
+            if (s.id === 'tempo' || s.id === 'popularity') display.textContent = v;
+            else if (s.id === 'loudness') display.textContent = v.toFixed(1);
+            else display.textContent = v.toFixed(2);
+        });
+    });
+
+    // ============================================================
+    // FORM SUBMISSIONS
+    // ============================================================
+    async function postJSON(url, data, btnId, resultId, renderFn) {
+        const btn = document.getElementById(btnId);
+        btn.disabled = true;
+        btn.textContent = '⏳ Procesando...';
+        const resultDiv = document.getElementById(resultId);
+
+        try {
+            const res = await fetch(url, {
+                method: 'POST',
+                headers: {'Content-Type': 'application/json'},
+                body: JSON.stringify(data)
+            });
+            const json = await res.json();
+            resultDiv.classList.remove('hidden');
+            resultDiv.innerHTML = renderFn(json);
+            resultDiv.scrollIntoView({behavior: 'smooth', block: 'center'});
+        } catch (err) {
+            resultDiv.classList.remove('hidden');
+            resultDiv.innerHTML = `<div class="alert-error">Error de conexión: ${err.message}</div>`;
+        } finally {
+            btn.disabled = false;
+            btn.textContent = btn.dataset.original || 'Enviar';
+        }
+    }
+
+    // --- FRAUDE ---
+    document.getElementById('btn-fraude').dataset.original = '🔍 Predecir';
+    document.getElementById('form-fraude').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const data = {};
+        for (let i = 1; i <= 28; i++) data[`V${i}`] = parseFloat(document.getElementById(`fraude-v${i}`).value);
+        data['Time'] = parseFloat(document.getElementById('fraude-time').value);
+        data['Amount'] = parseFloat(document.getElementById('fraude-amount').value);
+        postJSON('/api/predict/fraude', data, 'btn-fraude', 'result-fraude', json => {
+            if (!json.success) return `<div class="alert-error">${json.error}</div>`;
+            const cls = json.prediccion === 'FRAUDE' ? 'danger' : 'success';
+            return `<div class="alert alert-${cls}">
+                <h3>${json.mensaje}</h3>
+                <p><strong>Predicción:</strong> ${json.prediccion}</p>
+                <p><strong>Probabilidad de fraude:</strong> ${(json.probabilidad * 100).toFixed(2)}%</p>
+            </div>`;
+        });
+    });
+
+    // --- SPOTIFY ---
+    document.getElementById('btn-spotify').dataset.original = '🎯 Predecir Cluster';
+    document.getElementById('form-spotify').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const data = {};
+        sliders.forEach(s => {
+            data[s.id] = parseFloat(document.getElementById(`spotify-${s.id}`).value);
+        });
+        postJSON('/api/predict/spotify', data, 'btn-spotify', 'result-spotify', json => {
+            if (!json.success) return `<div class="alert-error">${json.error}</div>`;
+            return `<div class="alert alert-info">
+                <span class="cluster-tag">Cluster ${json.cluster_id}</span>
+                <h3>${json.cluster_nombre}</h3>
+                <p>${json.descripcion}</p>
+                <small>Distancia al centroide: <strong>${json.distancia_centroide}</strong></small>
+            </div>`;
+        });
+    });
+
+    // --- SEGURO ---
+    document.getElementById('btn-seguro').dataset.original = '🔮 Estimar Costo';
+    document.getElementById('form-seguro').addEventListener('submit', function(e) {
+        e.preventDefault();
+        const data = {
+            age: parseInt(document.getElementById('seguro-age').value),
+            sex: document.getElementById('seguro-sex').value,
+            bmi: parseFloat(document.getElementById('seguro-bmi').value),
+            children: parseInt(document.getElementById('seguro-children').value),
+            smoker: document.getElementById('seguro-smoker').value,
+            region: document.getElementById('seguro-region').value
+        };
+        postJSON('/api/predict/seguro', data, 'btn-seguro', 'result-seguro', json => {
+            if (!json.success) return `<div class="alert-error">${json.error}</div>`;
+            return `<div class="alert alert-success">
+                <h3>Costo Anual Estimado</h3>
+                <p class="big-number">$${json.prediccion.toLocaleString('en-US', {minimumFractionDigits: 2})}</p>
+                <small>Modelo: <strong>${json.modelo}</strong></small>
+            </div>`;
+        });
+    });
+
+    // ============================================================
+    // DASHBOARD LOADING (lazy, cached en servidor)
+    // ============================================================
+    async function loadDashboard(caseName) {
+        const container = document.getElementById(`dash-${caseName}`);
+        container.innerHTML = '<div class="loading">Cargando gráficas...</div>';
+
+        try {
+            const res = await fetch(`/api/dashboard/${caseName}`);
+            const graphs = await res.json();
+
+            if (graphs.error) {
+                container.innerHTML = `<div class="alert-error">${graphs.error}</div>`;
+                return;
+            }
+
+            container.innerHTML = '';
+            graphs.forEach(g => {
+                const div = document.createElement('div');
+                div.className = 'plotly-chart';
+                container.appendChild(div);
+                Plotly.newPlot(div, g.data, g.layout, {responsive: true});
+            });
+        } catch (err) {
+            container.innerHTML = `<div class="alert-error">Error: ${err.message}</div>`;
+        }
+    }
+    </script>
+</body>
+</html>
