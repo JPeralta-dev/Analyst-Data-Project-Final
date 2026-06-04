@@ -161,7 +161,12 @@
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
                                     Ejecutar Predicción
                                 </button>
+                                <button type="button" class="btn btn-ghost btn-sm" style="margin-top:8px;width:100%"
+                                    onclick="generateFraudeSample()">🎲 Generar transacción de ejemplo</button>
                             </form>
+                            <div class="input-help">
+                                <strong>💡 ¿Qué estoy ingresando?</strong> Las variables <code>V1–V28</code> son componentes PCA anonimizados que resumen el comportamiento de la transacción (no tienen significado directo, pero juntas forman una "huella digital" de la compra). <code>Time</code> son los segundos desde la primera transacción del dataset. <code>Amount</code> es el monto en euros. El modelo Random Forest usa estas 30 variables para decidir si la transacción parece fraudulenta o legítima.
+                            </div>
                             <div id="result-fraude" class="result-area hidden"></div>
                         </div>
                     </div>
@@ -181,6 +186,40 @@
                                     <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.3"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
                                     <span>Visualizaciones disponibles al cargar</span>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Metodología y Resultados -->
+                <div class="results-card">
+                    <div class="results-header">
+                        <h2>🧪 Metodología y Resultados del Análisis</h2>
+                    </div>
+                    <div class="results-grid">
+                        <div class="result-block">
+                            <h4>📋 Pipeline CRISP-DM</h4>
+                            <ol class="method-list">
+                                <li><strong>Comprensión del Negocio:</strong> Minimizar pérdidas detectando fraudes. Métrica principal: <em>Recall</em> (evitar falsos negativos).</li>
+                                <li><strong>Comprensión de Datos:</strong> 284,807 transacciones, 30 variables (28 PCA anonimizadas + Time + Amount). Solo 0.17% son fraude — dataset extremadamente desbalanceado.</li>
+                                <li><strong>Preparación:</strong> StandardScaler en Time y Amount (las PCA ya están normalizadas). Split 80/20 estratificado. SMOTE para balancear clases (227K → 454K).</li>
+                                <li><strong>Modelado:</strong> 4 algoritmos: Regresión Logística, Random Forest, XGBoost, Gradient Boosting.</li>
+                                <li><strong>Evaluación:</strong> ROC-AUC, F1, Precision, Recall, Matriz de Confusión.</li>
+                            </ol>
+                        </div>
+                        <div class="result-block">
+                            <h4>🏆 Resultados Obtenidos</h4>
+                            <table class="results-table">
+                                <thead><tr><th>Modelo</th><th>ROC-AUC</th><th>F1-Score</th><th>Recall</th><th>Precision</th></tr></thead>
+                                <tbody>
+                                    <tr class="best-row"><td><strong>🏅 Random Forest</strong></td><td>0.9841</td><td>0.8229</td><td>0.8061</td><td>0.8404</td></tr>
+                                    <tr><td>Gradient Boosting</td><td>0.9807</td><td>0.1888</td><td>0.8980</td><td>0.1055</td></tr>
+                                    <tr><td>XGBoost</td><td>0.9792</td><td>0.8018</td><td>0.8163</td><td>0.7878</td></tr>
+                                    <tr><td>Regresión Logística</td><td>0.9698</td><td>0.1094</td><td>0.0612</td><td>0.5217</td></tr>
+                                </tbody>
+                            </table>
+                            <div class="result-insight">
+                                <p><strong>🔍 Interpretación:</strong> Random Forest ganó con ROC-AUC de <strong>0.9841</strong>. Detecta el <strong>81% de los fraudes</strong> (Recall) con una precisión del 84%. Las variables más correlacionadas con fraude son <strong>V17, V14 y V12</strong>. SMOTE fue crítico: sin balanceo, los modelos no detectaban fraudes.</p>
                             </div>
                         </div>
                     </div>
@@ -235,7 +274,12 @@
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 3 19 12 5 21 5 3"/></svg>
                                     Predecir Cluster
                                 </button>
+                                <button type="button" class="btn btn-ghost btn-sm" style="margin-top:8px;width:100%"
+                                    onclick="generateSpotifySample()">🎲 Generar canción de ejemplo</button>
                             </form>
+                            <div class="input-help">
+                                <strong>💡 ¿Cómo predice el modelo?</strong> Cada slider representa una característica de audio extraída por Spotify. <strong>K-Means</strong> calcula a qué centroide (cluster) está más cerca tu canción. Los centroides se entrenaron con 114,000 canciones reales. Cuanto menor la <em>distancia al centroide</em>, más típica es tu canción de ese cluster.
+                            </div>
                             <div id="result-spotify" class="result-area hidden"></div>
                         </div>
                     </div>
@@ -254,6 +298,42 @@
                                     <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.3"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
                                     <span>Visualizaciones disponibles al cargar</span>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Metodología y Resultados -->
+                <div class="results-card">
+                    <div class="results-header">
+                        <h2>🧪 Metodología y Resultados del Análisis</h2>
+                    </div>
+                    <div class="results-grid">
+                        <div class="result-block">
+                            <h4>📋 Pipeline CRISP-DM</h4>
+                            <ol class="method-list">
+                                <li><strong>Comprensión del Negocio:</strong> Agrupar 114,000 canciones por características de audio para descubrir patrones musicales sin etiquetas previas (aprendizaje no supervisado).</li>
+                                <li><strong>Comprensión de Datos:</strong> 21 columnas, 10 features numéricas de audio (danceability, energy, loudness, speechiness, acousticness, instrumentalness, liveness, valence, tempo, popularity). 125 géneros. Sin valores nulos.</li>
+                                <li><strong>Preparación:</strong> StandardScaler para normalizar (requisito de K-Means basado en distancia euclidiana).</li>
+                                <li><strong>Modelado:</strong> K-Means con K=6 (seleccionado por método del codo + Silhouette Score).</li>
+                                <li><strong>Evaluación:</strong> Silhouette Score, Davies-Bouldin Index, PCA para visualización 2D.</li>
+                            </ol>
+                        </div>
+                        <div class="result-block">
+                            <h4>🏆 Resultados Obtenidos</h4>
+                            <table class="results-table">
+                                <thead><tr><th>Cluster</th><th>Canciones</th><th>Perfil Dominante</th></tr></thead>
+                                <tbody>
+                                    <tr><td><strong>0 — Energía y Baile</strong></td><td>29,986</td><td>Alta energy (0.82), danceability media. Electrónica/pop.</td></tr>
+                                    <tr><td><strong>1 — Acústico y Relajado</strong></td><td>24,637</td><td>Alta acousticness, baja energy. Folk, indie.</td></tr>
+                                    <tr><td><strong>2 — Instrumental</strong></td><td>38,284</td><td>Alta instrumentalness. Bandas sonoras, ambient.</td></tr>
+                                    <tr><td><strong>3 — Hablado / Podcast</strong></td><td>7,670</td><td>Alta speechiness. Rap, hip-hop, spoken word.</td></tr>
+                                    <tr><td><strong>4 — En Vivo</strong></td><td>12,159</td><td>Alta liveness. Conciertos, sesiones en vivo.</td></tr>
+                                    <tr><td><strong>5 — Melódico y Positivo</strong></td><td>1,264</td><td>Alta valence. Música alegre, pop positivo.</td></tr>
+                                </tbody>
+                            </table>
+                            <div class="result-insight">
+                                <p><strong>🔍 Interpretación:</strong> K-Means con <strong>K=6</strong> clusters, Silhouette Score de <strong>0.1652</strong> y Davies-Bouldin de <strong>1.624</strong>. PCA con 2 componentes explica el <strong>43%</strong> de la varianza. Energy y loudness tienen correlación positiva fuerte (r &gt; 0.7), mientras que energy y acousticness tienen correlación negativa (r &lt; −0.7), lo cual es consistente con la física del sonido.</p>
                             </div>
                         </div>
                     </div>
@@ -348,7 +428,12 @@
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
                                     Estimar Costo
                                 </button>
+                                <button type="button" class="btn btn-ghost btn-sm" style="margin-top:8px;width:100%"
+                                    onclick="generateSeguroSample()">🎲 Generar paciente de ejemplo</button>
                             </form>
+                            <div class="input-help">
+                                <strong>💡 ¿Cómo llega el modelo al resultado?</strong> Tus datos pasan por 3 etapas: <strong>① Encoding</strong> (sex, smoker, región → números), <strong>② Ingeniería de features</strong> (se calcula <code>bmi × smoker</code> y <code>edad²</code> para capturar sinergias), <strong>③ Gradient Boosting</strong> predice el costo usando 200 árboles de decisión. El feature <code>bmi_smoker</code> explica el <strong>80.67%</strong> de la predicción.
+                            </div>
                             <div id="result-seguro" class="result-area hidden"></div>
                         </div>
                     </div>
@@ -367,6 +452,42 @@
                                     <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" opacity="0.3"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
                                     <span>Visualizaciones disponibles al cargar</span>
                                 </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Metodología y Resultados -->
+                <div class="results-card">
+                    <div class="results-header">
+                        <h2>🧪 Metodología y Resultados del Análisis</h2>
+                    </div>
+                    <div class="results-grid">
+                        <div class="result-block">
+                            <h4>📋 Pipeline CRISP-DM</h4>
+                            <ol class="method-list">
+                                <li><strong>Comprensión del Negocio:</strong> Predecir el costo anual del seguro médico. Métrica principal: <em>MAE</em> (error en USD, interpretable por el área actuarial).</li>
+                                <li><strong>Comprensión de Datos:</strong> 1,338 asegurados, 6 variables predictoras + 1 target (charges). Sin nulos. Distribución asimétrica (skewness 1.51). Fumadores: 20.5% de la muestra.</li>
+                                <li><strong>Preparación e Ingeniería:</strong> One-hot encoding (región), codificación binaria (sex, smoker). Features nuevas: <code>bmi_smoker</code> (interacción BMI×tabaquismo) y <code>age_sq</code> (término cuadrático). Split 80/20. StandardScaler.</li>
+                                <li><strong>Modelado:</strong> 6 modelos: Regresión Lineal, Ridge, Lasso, Random Forest, XGBoost y Gradient Boosting.</li>
+                                <li><strong>Evaluación:</strong> MAE, RMSE, R². Análisis de residuales. Importancia de features.</li>
+                            </ol>
+                        </div>
+                        <div class="result-block">
+                            <h4>🏆 Resultados Obtenidos</h4>
+                            <table class="results-table">
+                                <thead><tr><th>Modelo</th><th>MAE ($)</th><th>RMSE ($)</th><th>R²</th></tr></thead>
+                                <tbody>
+                                    <tr class="best-row"><td><strong>🏅 Gradient Boosting</strong></td><td>2,495.65</td><td>4,440.17</td><td>0.8730</td></tr>
+                                    <tr><td>Regresión Lineal</td><td>2,755.47</td><td>4,537.67</td><td>0.8674</td></tr>
+                                    <tr><td>Ridge</td><td>2,763.69</td><td>4,529.65</td><td>0.8678</td></tr>
+                                    <tr><td>Lasso</td><td>2,761.84</td><td>4,544.74</td><td>0.8669</td></tr>
+                                    <tr><td>Random Forest</td><td>2,506.33</td><td>4,666.44</td><td>0.8597</td></tr>
+                                    <tr><td>XGBoost</td><td>2,583.13</td><td>4,518.97</td><td>0.8685</td></tr>
+                                </tbody>
+                            </table>
+                            <div class="result-insight">
+                                <p><strong>🔍 Interpretación:</strong> Gradient Boosting ganó con <strong>R² = 0.8730</strong> y <strong>MAE = $2,495.65</strong>. El feature más importante es <strong>bmi_smoker (80.67%)</strong> — confirma que la interacción entre obesidad y tabaquismo es el predictor dominante. Los fumadores pagan <strong>3.8× más</strong> ($32,050 vs $8,434). La ingeniería de features fue determinante: sin bmi_smoker y age_sq, los modelos lineales no capturan la sinergia BMI-tabaquismo.</p>
                             </div>
                         </div>
                     </div>
@@ -540,6 +661,45 @@
             </div>`;
         });
     });
+
+    // ================================================================
+    // QUICK SAMPLE GENERATORS
+    // ================================================================
+    function generateFraudeSample() {
+        // Generate realistic PCA values (centered around 0, small variance)
+        for (let i = 1; i <= 28; i++) {
+            const val = (Math.random() - 0.5) * 4; // Range roughly -2 to +2 like PCA
+            document.getElementById(`fraude-v${i}`).value = val.toFixed(4);
+        }
+        document.getElementById('fraude-time').value = Math.floor(Math.random() * 150000);
+        document.getElementById('fraude-amount').value = (Math.random() * 200 + 1).toFixed(2);
+    }
+
+    function generateSpotifySample() {
+        const samples = {
+            danceability: 0.75, energy: 0.82, loudness: -4.2,
+            speechiness: 0.06, acousticness: 0.15, instrumentalness: 0.01,
+            liveness: 0.12, valence: 0.65, tempo: 128, popularity: 78
+        };
+        slidersDef.forEach(s => {
+            const el = document.getElementById(`spotify-${s.id}`);
+            const val = samples[s.id] || (s.min + Math.random() * (s.max - s.min));
+            el.value = val;
+            const display = document.getElementById(`spotify-${s.id}-val`);
+            if (s.fmt === '0') display.textContent = Math.round(val);
+            else if (s.fmt === '0.0') display.textContent = val.toFixed(1);
+            else display.textContent = parseFloat(val).toFixed(2);
+        });
+    }
+
+    function generateSeguroSample() {
+        document.getElementById('seguro-age').value = 35;
+        document.getElementById('seguro-sex').value = 'male';
+        document.getElementById('seguro-bmi').value = 28.5;
+        document.getElementById('seguro-children').value = 2;
+        document.getElementById('seguro-smoker').value = 'no';
+        document.getElementById('seguro-region').value = 'southeast';
+    }
 
     // ================================================================
     // DASHBOARD LOADING

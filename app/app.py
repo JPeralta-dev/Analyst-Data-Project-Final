@@ -127,17 +127,17 @@ def predict_spotify():
         distancias = np.linalg.norm(X_scaled - kmeans.cluster_centers_, axis=1)
 
         nombres = {
-            0: 'Energía y Baile', 1: 'Acústico y Relajado',
-            2: 'Instrumental', 3: 'Hablado / Podcast',
-            4: 'En Vivo', 5: 'Melódico y Positivo'
+            0: 'Energía y En Vivo', 1: 'Acústico y Relajado',
+            2: 'Bailable y Positivo', 3: 'Clásico e Instrumental',
+            4: 'Instrumental Enérgico', 5: 'Hablado / Podcast'
         }
         descripciones = {
-            0: 'Alta danceability y energy. Electrónica, pop bailable, reggaetón.',
-            1: 'Acústico, baja energy. Folk, baladas, indie acústico.',
-            2: 'Alta instrumentalness. Bandas sonoras, clásica, ambient, experimental.',
-            3: 'Alta speechiness. Rap, hip-hop, podcasts, spoken word.',
-            4: 'Alta liveness. Conciertos grabados, sesiones en vivo.',
-            5: 'Alta valence y melodía. Pop positivo, música alegre.'
+            0: 'Alta energy (0.82) y liveness. Electrónica enérgica, rock en vivo, EDM.',
+            1: 'Alta acousticness (0.66), baja energy (0.39). Folk, indie acústico, baladas.',
+            2: 'Alta danceability (0.70), energy (0.73) y valence (0.69). Pop bailable, reggaetón, música alegre.',
+            3: 'Muy alta acousticness (0.86) e instrumentalness (0.77), baja energy (0.17). Música clásica, bandas sonoras, ambient.',
+            4: 'Alta instrumentalness (0.79) con energy (0.75). Jazz instrumental, post-rock, electrónica sin voz.',
+            5: 'Muy alta speechiness (0.79) y liveness (0.62). Podcasts, rap, spoken word, hip-hop en vivo.'
         }
 
         return jsonify({
